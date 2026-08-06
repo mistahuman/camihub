@@ -21,7 +21,7 @@
 			<PlaylistPanel />
 		</div>
 
-		<div class="grid items-start gap-6 lg:grid-cols-2">
+		<div class="grid gap-6 lg:grid-cols-2">
 			<NotesPanel />
 			<StringForge />
 		</div>

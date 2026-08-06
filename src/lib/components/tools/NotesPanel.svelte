@@ -58,6 +58,6 @@
 		placeholder="Write anything here — it saves itself…"
 		rows="16"
 		aria-label="Notes"
-		class="textarea min-h-[26rem] flex-1 resize-y text-sm"
+		class="textarea min-h-64 flex-1 resize-y text-sm"
 	></textarea>
 </ToolPanel>
