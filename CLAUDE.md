@@ -40,10 +40,9 @@ Single theme, `cami-theme`, in `src/lib/styles/cami-theme.css`, applied with
 `data-theme="cami-theme"` on `<html>`. Light/dark is a **separate axis** (`data-mode`), toggled
 in the header and persisted in `localStorage`.
 
-What makes it its own thing rather than a recoloured starter: a cyan/turquoise primary
-(hue ~201) against a rosa secondary (hue ~13), surfaces tinted on the same side of the wheel
-(hue 225) and going navy — not black — in the dark, and restrained corners kept close
-together so nothing looks out of family
+What makes it its own thing rather than a recoloured starter: a deep azure primary (hue 250)
+against a rosa secondary (hue ~13), surfaces tinted blue (hue 240) and going navy — not
+black — in the dark, and restrained corners kept close together so nothing looks out of family
 (`--radius-base: 0.375rem`, `--radius-container: 0.5rem`). The body mesh gradient in
 `routes/layout.css` washes primary into secondary to match.
 
@@ -68,8 +67,9 @@ palette with the [Skeleton theme generator](https://themes.skeleton.dev) and pas
 
 A stylized elephant, hand-drawn as SVG in `lib/components/icons/Logo.svelte` and duplicated in
 `static/favicon.svg` (the favicon is static, so it carries the primary colour hard-coded as
-`#008e96` — when the palette moves, convert the new `primary-500` and update it too). It is drawn with the same stroke weight and round caps as the lucide
-icons in the panel headers, which is what makes it sit with them instead of on top of them.
+`#0080dd` — when the palette moves, convert the new `primary-500` and update it too). It is
+drawn with the same stroke weight and round caps as the lucide icons in the panel headers,
+which is what makes it sit with them instead of on top of them.
 
 ## Use Skeleton's own primitives
 
