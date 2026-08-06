@@ -1,37 +1,29 @@
 <script lang="ts">
-	import WelcomeHome from '$lib/components/WelcomeHome.svelte';
-	import Card from '$lib/components/generic/Card.svelte';
-
-	const stack = [
-		{ label: 'SvelteKit', description: 'Full-stack framework for building web apps.' },
-		{ label: 'Skeleton UI', description: 'UI toolkit built for Svelte and Tailwind.' },
-		{ label: 'TailwindCSS', description: 'Utility-first CSS framework.' },
-		{ label: 'TypeScript', description: 'Typed JavaScript for safer code.' },
-		{ label: 'ESLint + Prettier', description: 'Linting and formatting out of the box.' }
-	];
+	import StringForge from '$lib/components/tools/StringForge.svelte';
+	import PlaylistPanel from '$lib/components/tools/PlaylistPanel.svelte';
+	import NotesPanel from '$lib/components/tools/NotesPanel.svelte';
 </script>
 
-<div class="gradient-homepage-one">
-	<section>
-		<div class="container mx-auto flex justify-center p-10 pt-20 pb-5">
-			<WelcomeHome />
+<svelte:head>
+	<title>camihub</title>
+</svelte:head>
+
+<!-- Every tool lives here, on one page. No per-tool routes: the playlist keeps
+	 playing while the other panels are in use. -->
+<div class="container mx-auto max-w-screen-2xl px-4 py-8 xl:px-10">
+	<div class="space-y-6">
+		<!-- Dedication + playlist, narrower than the tools below so they stay centred -->
+		<div class="mx-auto max-w-3xl space-y-3">
+			<h1 class="sr-only">camihub</h1>
+			<p class="text-center text-3xl font-semibold tracking-tight text-surface-900-100">
+				for cami <span class="text-secondary-700-300">&lt;3</span>
+			</p>
+			<PlaylistPanel />
 		</div>
-	</section>
-</div>
-<div class="gradient-homepage-two">
-	<section>
-		<!-- Stack -->
-		<div class="space-y-4">
-			<div class="container mx-auto max-w-3xl space-y-12 px-4 py-16">
-				<h2 class="text-center h3 font-semibold">What's inside</h2>
-				<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-					{#each stack as item (item.label)}
-						<Card title={item.label}>
-							<p>{item.description}</p>
-						</Card>
-					{/each}
-				</div>
-			</div>
+
+		<div class="grid items-start gap-6 lg:grid-cols-2">
+			<NotesPanel />
+			<StringForge />
 		</div>
-	</section>
+	</div>
 </div>

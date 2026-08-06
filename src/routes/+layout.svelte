@@ -1,7 +1,9 @@
 <script lang="ts">
+	import '@fontsource-variable/plus-jakarta-sans';
 	import './layout.css';
 	import Header from '$lib/components/generic/Header.svelte';
 	import Footer from '$lib/components/generic/Footer.svelte';
+	import HistoryDrawer from '$lib/components/generic/HistoryDrawer.svelte';
 	import { uiStore } from '$lib/stores/ui.svelte';
 
 	let { children } = $props();
@@ -21,8 +23,10 @@
 	<Footer />
 </div>
 
+<HistoryDrawer />
+
 <!-- Toast overlay -->
-<div class="pointer-events-none fixed bottom-6 right-6 z-50 flex flex-col gap-2">
+<div class="pointer-events-none fixed right-6 bottom-6 z-50 flex flex-col gap-2">
 	{#each uiStore.toasts as toast (toast.id)}
 		<div class="card px-4 py-3 text-sm shadow-lg {toastClass[toast.type] ?? toastClass.info}">
 			{toast.message}

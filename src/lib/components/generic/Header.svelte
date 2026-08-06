@@ -1,57 +1,36 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import GitHubIcon from '$lib/components/icons/GitHubIcon.svelte';
-	import Drawer from './Drawer.svelte';
 	import Lightswitch from './Lightswitch.svelte';
-	import ThemeSwitch from './ThemeSwitch.svelte';
 	import Logo from '../icons/Logo.svelte';
-	import { THEME_PICKER, DEFAULT_THEME } from '$lib/config';
-
-	let titleDrawer = 'menu';
-	const coreLinks = [
-		{ href: resolve('/'), label: 'home', target: '_self' },
-		{ href: resolve('/exampleitems'), label: 'exampleitems', target: '_self' },
-		{ href: resolve('/playground'), label: 'playground', target: '_self' }
-	];
 </script>
 
 <header
-	class="sticky top-0 z-50 flex h-[70px] w-full items-center border-b-[1px] border-surface-500/20 bg-surface-50/90 backdrop-blur dark:bg-surface-950/90"
+	class="sticky top-0 z-30 flex h-[70px] w-full items-center border-b-[1px] border-surface-500/20 bg-surface-50/90 backdrop-blur dark:bg-surface-950/90"
 >
 	<div
-		class="container mx-auto grid max-w-screen-2xl grid-cols-[auto_1fr_auto] items-center gap-4 px-4 xl:grid-cols-[1fr_auto_1fr] xl:px-10"
+		class="container mx-auto grid max-w-screen-2xl grid-cols-[auto_1fr_auto] items-center gap-4 px-4 xl:px-10"
 	>
-		<!-- Left -->
-		<div class="flex items-stretch justify-start gap-4">
-			<!-- Mobile Nav Drawer -->
-			<Drawer title={titleDrawer} navigation={coreLinks} />
-			<!-- Logo -->
-			<a class="hidden xl:inline-block" href={resolve('/')} title="SvelteKit Skeleton Starter">
-				<Logo width="32" height="32" />
-			</a>
-			<div class="hidden items-center xl:flex">
-				<!-- Navigation -->
-				{#each coreLinks as link (link.href)}
-					<a class="btn hover:preset-tonal" href={link.href} target={link.target}>
-						{link.label}
-					</a>
-				{/each}
-			</div>
-		</div>
+		<!-- Left: Logo + name -->
+		<a class="flex items-center gap-2.5" href={resolve('/')} title="camihub">
+			<Logo width="28" height="28" />
+			<span class="text-[15px] font-bold tracking-tight lowercase">
+				cami<span class="text-primary-600 dark:text-primary-400">hub</span>
+			</span>
+		</a>
 		<!-- Middle -->
-		<div class="flex items-center gap-2"></div>
+		<div></div>
 		<!-- Right -->
 		<div class="flex items-stretch justify-end gap-2">
-			<!-- Mode and Theme -->
 			<Lightswitch />
-			{#if THEME_PICKER}
-				<ThemeSwitch defaultTheme={DEFAULT_THEME} />
-			{/if}
-			<!-- Divider -->
 			<span class="border-r border-surface-200-800"></span>
-			<!-- Social -->
 			<nav class="flex items-center gap-1">
-				<a class="btn-icon hover:preset-tonal" href="https://github.com/mistahuman" rel="external">
+				<a
+					class="btn-icon hover:preset-tonal"
+					href="https://github.com/mistahuman/camihub"
+					rel="external"
+					target="_blank"
+				>
 					<GitHubIcon size={20} />
 				</a>
 			</nav>

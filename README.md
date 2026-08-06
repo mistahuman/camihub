@@ -1,24 +1,19 @@
-# sveltekit-skeleton-starter
+# camihub
 
-Starter for web apps built with SvelteKit and Skeleton UI. Builds static for
-GitHub Pages by default, or as a Node server when used inside
-[fullstack-webapp-starter](https://github.com/mistahuman/fullstack-webapp-starter).
+A small hub of browser tools for Camilla, all on a single page: the token joiner
+from [forge-string](https://github.com/mistahuman/forge-string), her Spotify
+playlist, and a scratchpad for notes.
+
+Everything runs in the browser — nothing is uploaded, and the notes stay in
+`localStorage`.
 
 ## Stack
 
-SvelteKit · Svelte 5 (runes) · Skeleton 5 · Tailwind 4 · TypeScript · Prettier
+SvelteKit · Svelte 5 · Skeleton · Tailwind · TypeScript
 
 ## Run
 
 ```bash
 npm install
-cp env.sample .env
 npm run dev
 ```
-
-## Configuration
-
-| Var | What |
-|---|---|
-| `VITE_API_URL` | Backend base URL |
-| `DOCKER_BUILD` | Set to `true` to build with `adapter-node` instead of `adapter-static` |

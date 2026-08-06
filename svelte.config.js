@@ -12,9 +12,7 @@ const config = {
 		runes: ({ filename }) => (filename.split(/[/\\]/).includes('node_modules') ? undefined : true)
 	},
 	kit: {
-		adapter: isDocker
-			? adapterNode()
-			: adapterStatic({ fallback: '404.html' }),
+		adapter: isDocker ? adapterNode() : adapterStatic({ fallback: '404.html' }),
 		...(!isDocker && {
 			paths: { base },
 			prerender: {
