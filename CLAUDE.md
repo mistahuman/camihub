@@ -13,7 +13,7 @@ project is having everything reachable without navigating.
 | Tool     | What it is                                                                                      | State                                           |
 | -------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------- |
 | String   | The token joiner ported from `forge-string`: paste tokens, pick a separator, copy `a OR b OR c` | ported, `localStorage` copy history             |
-| Playlist | Camilla's Spotify playlist, embedded as an `<iframe>`                                           | embed only — no Spotify API, no OAuth, no token |
+| Playlist | Camilla's Spotify playlist, embedded as an `<iframe>`, collapsed behind a toggle                 | embed only — no Spotify API, no OAuth, no token |
 | Notes    | Scratchpad / whiteboard                                                                         | text persisted in `localStorage`                |
 
 Input parsing for String is inherited from `forge-string`: whitespace, commas,
@@ -22,9 +22,13 @@ works without pre-cleaning.
 
 ## Layout
 
-`Playlist` is a full-width strip above two columns, `Notes` left and `String` right,
-stacking into one column below `lg`. The strip uses Spotify's compact player (`height=152`)
-so it costs little vertical space.
+`String` is the left column and `Notes` the right one, stacking into one column below `lg`.
+Above them sits the `Playlist`, **collapsed by default** behind a small toggle button: it is
+no longer the centrepiece, it is opt-in. The open/closed state is persisted in `localStorage`
+(`camihub:playlist-open`) and the strip uses Spotify's compact player (`height=152`).
+
+The iframe is mounted lazily on the first open and then **never unmounted** — collapsing only
+adds `hidden`, so closing the strip does not stop the music.
 
 The two columns are left to grid's default stretch — no `items-start` — and the notes
 `textarea` is `flex-1`, so `Notes` matches whatever height `String` happens to need instead of
@@ -32,7 +36,8 @@ being pinned to a row count that goes stale the moment `String` grows (it does, 
 Custom separator input appears).
 
 Do not turn the panels into internal tabs: the Spotify iframe has to stay mounted or the
-music stops every time she switches tool. That constraint is the reason for this layout.
+music stops every time she switches tool. That constraint is the reason for this layout, and
+the reason the collapse hides the iframe rather than destroying it.
 
 ## Theming
 
