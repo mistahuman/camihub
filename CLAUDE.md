@@ -13,7 +13,7 @@ project is having everything reachable without navigating.
 | Tool     | What it is                                                                                      | State                                           |
 | -------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------- |
 | String   | The token joiner ported from `forge-string`: paste tokens, pick a separator, copy `a OR b OR c` | ported, `localStorage` copy history             |
-| Playlist | Camilla's Spotify playlist, embedded as an `<iframe>`, collapsed behind a toggle                 | embed only — no Spotify API, no OAuth, no token |
+| Playlist | Camilla's Spotify playlist, embedded as an `<iframe>` in a floating dock                        | embed only — no Spotify API, no OAuth, no token |
 | Notes    | Scratchpad / whiteboard                                                                         | text persisted in `localStorage`                |
 
 Input parsing for String is inherited from `forge-string`: whitespace, commas,
@@ -23,12 +23,16 @@ works without pre-cleaning.
 ## Layout
 
 `String` is the left column and `Notes` the right one, stacking into one column below `lg`.
-Above them sits the `Playlist`, **collapsed by default** behind a small toggle button: it is
-no longer the centrepiece, it is opt-in. The open/closed state is persisted in `localStorage`
-(`camihub:playlist-open`) and the strip uses Spotify's compact player (`height=152`).
 
-The iframe is mounted lazily on the first open and then **never unmounted** — collapsing only
-adds `hidden`, so closing the strip does not stop the music.
+The `Playlist` is **out of the page flow entirely**: it is a floating dock rendered from
+`+layout.svelte`, pinned `fixed bottom-4 left-4` (left, so it stays clear of the toast overlay
+on the right) and hidden by default. It is toggled by the music icon-button in the header;
+`playlistStore` (`stores/playlist.svelte.ts`) holds that state because the toggle and the
+player sit on opposite ends of the tree, and it persists in `localStorage`
+(`camihub:playlist-open`). The dock uses Spotify's compact player (`height=152`).
+
+The iframe is mounted lazily on the first open and then **never unmounted** — closing only
+adds `hidden`, so it does not stop the music.
 
 The two columns are left to grid's default stretch — no `items-start` — and the notes
 `textarea` is `flex-1`, so `Notes` matches whatever height `String` happens to need instead of

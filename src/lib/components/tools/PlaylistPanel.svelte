@@ -1,66 +1,46 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { ListMusic, ChevronUp } from 'lucide-svelte';
-	import ToolPanel from '$lib/components/generic/ToolPanel.svelte';
+	import { ListMusic, X } from 'lucide-svelte';
 	import { SPOTIFY_PLAYLIST_ID } from '$lib/config';
+	import { playlistStore } from '$lib/stores/playlist.svelte';
 
 	// The share link carries a `?si=…` tracking param; keep only the id itself.
 	const playlistId = SPOTIFY_PLAYLIST_ID.split('?')[0];
 
 	// Plain embed: no Spotify API, no OAuth, no token — it stays a static site.
-	// height 152 is Spotify's compact player, so this sits as a strip above the two columns.
+	// height 152 is Spotify's compact player, which is what makes the dock small.
 	const embedUrl = `https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator`;
 
-	const STORAGE_KEY = 'camihub:playlist-open';
-
-	// Hidden by default: the playlist is no longer the centrepiece, it is opt-in.
-	let open = $state(false);
-	// Once revealed the iframe stays mounted for the rest of the session — collapsing
-	// only hides it, so closing the strip does not stop the music.
-	let mounted = $state(false);
-
-	onMount(() => {
-		try {
-			if (localStorage.getItem(STORAGE_KEY) === 'true') {
-				open = true;
-				mounted = true;
-			}
-		} catch {
-			// private mode / storage disabled — just stay closed
-		}
-	});
-
-	function toggle() {
-		open = !open;
-		if (open) mounted = true;
-		try {
-			localStorage.setItem(STORAGE_KEY, String(open));
-		} catch {
-			// nothing to persist to, the toggle still works for this session
-		}
-	}
+	onMount(() => playlistStore.init());
 </script>
 
-<div class="space-y-3">
-	<div class="flex justify-center">
-		<button
-			onclick={toggle}
-			aria-expanded={open}
-			class="btn gap-1.5 text-xs text-surface-600-400 btn-sm hover:preset-tonal"
-		>
-			<ListMusic size={14} />
-			{open ? 'Hide playlist' : 'Playlist'}
-			<ChevronUp size={14} class="transition-transform {open ? '' : 'rotate-180'}" />
-		</button>
-	</div>
+<!-- Floating dock, bottom-left so it stays clear of the toast overlay on the right.
+	 Never unmounted once opened: hiding is `hidden`, not a destroy, or the music stops. -->
+{#if playlistStore.mounted}
+	<div
+		class="fixed bottom-4 left-4 z-40 w-[calc(100vw-2rem)] max-w-sm"
+		class:hidden={!playlistStore.open}
+	>
+		<section class="overflow-hidden card preset-filled-surface-100-900 shadow-xl">
+			<header
+				class="flex items-center justify-between gap-2 border-b border-surface-200-800 px-3 py-2"
+			>
+				<div class="flex items-center gap-2">
+					<span class="flex text-primary-700-300"><ListMusic size={16} /></span>
+					<span class="text-xs font-semibold tracking-widest text-surface-700-300 uppercase">
+						Playlist
+					</span>
+				</div>
+				<button
+					onclick={() => playlistStore.toggle()}
+					aria-label="Hide playlist"
+					class="btn-icon btn-icon-sm hover:preset-tonal"
+				>
+					<X size={16} />
+				</button>
+			</header>
 
-	{#if mounted}
-		<div class:hidden={!open}>
-			<ToolPanel title="Playlist">
-				{#snippet icon()}
-					<ListMusic size={16} />
-				{/snippet}
-
+			<div class="p-3">
 				{#if playlistId}
 					<iframe
 						title="Spotify playlist"
@@ -72,7 +52,7 @@
 					></iframe>
 				{:else}
 					<div
-						class="flex min-h-[152px] flex-col items-center justify-center gap-2 rounded-container border border-dashed border-surface-300-700 p-6 text-center"
+						class="flex min-h-[152px] flex-col items-center justify-center gap-2 rounded-container border border-dashed border-surface-300-700 p-4 text-center"
 					>
 						<p class="text-sm text-surface-600-400">No playlist set yet.</p>
 						<p class="text-xs text-surface-500">
@@ -81,7 +61,7 @@
 						</p>
 					</div>
 				{/if}
-			</ToolPanel>
-		</div>
-	{/if}
-</div>
+			</div>
+		</section>
+	</div>
+{/if}
