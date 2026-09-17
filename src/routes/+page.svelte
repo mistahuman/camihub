@@ -7,9 +7,7 @@
 	<title>camihub</title>
 </svelte:head>
 
-<!-- Every tool lives here, on one page. No per-tool routes: the playlist keeps
-	 playing while the other panels are in use. The playlist itself is out of the flow:
-	 it is a floating dock, toggled from the header (see +layout.svelte). -->
+<!-- Every tool lives here, on one page. No per-tool routes. -->
 <div class="container mx-auto max-w-screen-2xl px-4 py-8 xl:px-10">
 	<div class="space-y-6">
 		<!-- Dedication -->

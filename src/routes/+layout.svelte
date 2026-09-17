@@ -4,7 +4,6 @@
 	import Header from '$lib/components/generic/Header.svelte';
 	import Footer from '$lib/components/generic/Footer.svelte';
 	import HistoryDrawer from '$lib/components/generic/HistoryDrawer.svelte';
-	import PlaylistPanel from '$lib/components/tools/PlaylistPanel.svelte';
 	import { uiStore } from '$lib/stores/ui.svelte';
 
 	let { children } = $props();
@@ -25,9 +24,6 @@
 </div>
 
 <HistoryDrawer />
-
-<!-- Floating playlist dock, toggled from the header -->
-<PlaylistPanel />
 
 <!-- Toast overlay -->
 <div class="pointer-events-none fixed right-6 bottom-6 z-50 flex flex-col gap-2">

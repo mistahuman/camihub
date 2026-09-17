@@ -7,14 +7,13 @@ Forked from `sveltekit-skeleton-starter` on 2026-08-06.
 
 ## The tools
 
-All three live on `/` — there is deliberately **no per-tool route**. The point of the
+Both live on `/` — there is deliberately **no per-tool route**. The point of the
 project is having everything reachable without navigating.
 
-| Tool     | What it is                                                                                      | State                                           |
-| -------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| String   | The token joiner ported from `forge-string`: paste tokens, pick a separator, copy `a OR b OR c` | ported, `localStorage` copy history             |
-| Playlist | Camilla's Spotify playlist, embedded as an `<iframe>` in a floating dock                        | embed only — no Spotify API, no OAuth, no token |
-| Notes    | Scratchpad / whiteboard                                                                         | text persisted in `localStorage`                |
+| Tool   | What it is                                                                                      | State                                  |
+| ------ | ----------------------------------------------------------------------------------------------- | -------------------------------------- |
+| String | The token joiner ported from `forge-string`: paste tokens, pick a separator, copy `a OR b OR c` | ported, `localStorage` copy history    |
+| Notes  | Scratchpad with multiple notes, switched from a chip row                                        | notes list persisted in `localStorage` |
 
 Input parsing for String is inherited from `forge-string`: whitespace, commas,
 semicolons and newlines all count as separators, so pasting a spreadsheet column
@@ -24,24 +23,27 @@ works without pre-cleaning.
 
 `String` is the left column and `Notes` the right one, stacking into one column below `lg`.
 
-The `Playlist` is **out of the page flow entirely**: it is a floating dock rendered from
-`+layout.svelte`, pinned `fixed bottom-4 left-4` (left, so it stays clear of the toast overlay
-on the right) and hidden by default. It is toggled by the music icon-button in the header;
-`playlistStore` (`stores/playlist.svelte.ts`) holds that state because the toggle and the
-player sit on opposite ends of the tree, and it persists in `localStorage`
-(`camihub:playlist-open`). The dock uses Spotify's compact player (`height=152`).
-
-The iframe is mounted lazily on the first open and then **never unmounted** — closing only
-adds `hidden`, so it does not stop the music.
-
 The two columns are left to grid's default stretch — no `items-start` — and the notes
 `textarea` is `flex-1`, so `Notes` matches whatever height `String` happens to need instead of
 being pinned to a row count that goes stale the moment `String` grows (it does, when the
 Custom separator input appears).
 
-Do not turn the panels into internal tabs: the Spotify iframe has to stay mounted or the
-music stops every time she switches tool. That constraint is the reason for this layout, and
-the reason the collapse hides the iframe rather than destroying it.
+There used to be a Spotify playlist dock; it was removed on 2026-09-17.
+
+## Notes
+
+`stores/notes.svelte.ts` holds a list of notes plus the active id, saved as one JSON blob under
+`camihub-notes-list` (debounced while typing, immediate on select/create/delete). A note has no
+title field: the chip label is its first non-empty line (`noteTitle`).
+
+- The old single-sheet key `camihub-notes` is migrated into the first note on `init()` and
+  then removed — keep that path, it is how her existing notes survived the change.
+- There is always at least one note: deleting the last one empties it instead.
+- "New" is disabled while the active note is empty, so blank notes do not pile up.
+- The chip row only appears once there are two notes, so the single-note case looks like
+  the old scratchpad.
+- The `textarea` is wrapped in `{#key}` on the active id, so switching notes resets scroll
+  and undo history instead of carrying them across.
 
 ## Theming
 

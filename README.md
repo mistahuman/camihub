@@ -1,8 +1,8 @@
 # camihub
 
 A small hub of browser tools for Camilla, all on a single page: the token joiner
-from [forge-string](https://github.com/mistahuman/forge-string), her Spotify
-playlist, and a scratchpad for notes.
+from [forge-string](https://github.com/mistahuman/forge-string) and a scratchpad
+that holds as many notes as she needs.
 
 Everything runs in the browser — nothing is uploaded, and the notes stay in
 `localStorage`.

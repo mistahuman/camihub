@@ -3,8 +3,6 @@
 	import GitHubIcon from '$lib/components/icons/GitHubIcon.svelte';
 	import Lightswitch from './Lightswitch.svelte';
 	import Logo from '../icons/Logo.svelte';
-	import { ListMusic } from 'lucide-svelte';
-	import { playlistStore } from '$lib/stores/playlist.svelte';
 </script>
 
 <header
@@ -24,16 +22,6 @@
 		<div></div>
 		<!-- Right -->
 		<div class="flex items-stretch justify-end gap-2">
-			<button
-				onclick={() => playlistStore.toggle()}
-				aria-pressed={playlistStore.open}
-				title={playlistStore.open ? 'Hide playlist' : 'Show playlist'}
-				class="btn-icon {playlistStore.open
-					? 'preset-tonal-primary'
-					: 'hover:preset-tonal'} self-center"
-			>
-				<ListMusic size={20} />
-			</button>
 			<Lightswitch />
 			<span class="border-r border-surface-200-800"></span>
 			<nav class="flex items-center gap-1">
