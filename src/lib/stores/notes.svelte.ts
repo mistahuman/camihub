@@ -21,6 +21,7 @@ const first = blank();
 let notes = $state<Note[]>([first]);
 let activeId = $state(first.id);
 let savedAt = $state<number | null>(null);
+let drawerOpen = $state(false);
 let timer: ReturnType<typeof setTimeout> | null = null;
 
 function persist() {
@@ -47,6 +48,12 @@ export function noteTitle(note: Note): string {
 	return line?.trim() || 'Untitled';
 }
 
+// Second non-empty line, shown under the title in the notes drawer.
+export function notePreview(note: Note): string {
+	const lines = note.text.split('\n').filter((l) => l.trim() !== '');
+	return lines[1]?.trim() ?? '';
+}
+
 export const notesStore = {
 	get notes() {
 		return notes;
@@ -65,6 +72,12 @@ export const notesStore = {
 	},
 	get savedAt() {
 		return savedAt;
+	},
+	get drawerOpen() {
+		return drawerOpen;
+	},
+	set drawerOpen(v: boolean) {
+		drawerOpen = v;
 	},
 
 	init() {
@@ -104,15 +117,17 @@ export const notesStore = {
 		saveNow();
 	},
 
-	// Deletes the active note. The last one is emptied instead, so there is always a sheet.
-	remove() {
+	// Deletes a note (the active one by default). The last one is emptied instead, so there
+	// is always a sheet. Deleting another note leaves the active one where it is.
+	remove(id = activeId) {
 		if (notes.length === 1) {
 			notes = [blank()];
 			activeId = notes[0].id;
 		} else {
-			const index = notes.findIndex((n) => n.id === activeId);
-			notes = notes.filter((n) => n.id !== activeId);
-			activeId = notes[Math.min(index, notes.length - 1)].id;
+			const index = notes.findIndex((n) => n.id === id);
+			if (index === -1) return;
+			notes = notes.filter((n) => n.id !== id);
+			if (id === activeId) activeId = notes[Math.min(index, notes.length - 1)].id;
 		}
 		saveNow();
 	}

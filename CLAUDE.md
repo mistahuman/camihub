@@ -13,7 +13,7 @@ project is having everything reachable without navigating.
 | Tool   | What it is                                                                                      | State                                  |
 | ------ | ----------------------------------------------------------------------------------------------- | -------------------------------------- |
 | String | The token joiner ported from `forge-string`: paste tokens, pick a separator, copy `a OR b OR c` | ported, `localStorage` copy history    |
-| Notes  | Scratchpad with multiple notes, switched from a chip row                                        | notes list persisted in `localStorage` |
+| Notes  | Scratchpad with multiple notes, switched from a side drawer, with an UPPER/lower case button    | notes list persisted in `localStorage` |
 
 Input parsing for String is inherited from `forge-string`: whitespace, commas,
 semicolons and newlines all count as separators, so pasting a spreadsheet column
@@ -34,14 +34,23 @@ There used to be a Spotify playlist dock; it was removed on 2026-09-17.
 
 `stores/notes.svelte.ts` holds a list of notes plus the active id, saved as one JSON blob under
 `camihub-notes-list` (debounced while typing, immediate on select/create/delete). A note has no
-title field: the chip label is its first non-empty line (`noteTitle`).
+title field: the label in the drawer is its first non-empty line (`noteTitle`), with the second
+line as a preview (`notePreview`).
 
 - The old single-sheet key `camihub-notes` is migrated into the first note on `init()` and
   then removed — keep that path, it is how her existing notes survived the change.
 - There is always at least one note: deleting the last one empties it instead.
 - "New" is disabled while the active note is empty, so blank notes do not pile up.
-- The chip row only appears once there are two notes, so the single-note case looks like
-  the old scratchpad.
+- Notes are listed in a slide-over drawer (`tools/NotesDrawer.svelte`), opened by the "All"
+  button (History icon, far right of the header, where String keeps "Recent"), the same way String opens its copy history. It replaced a chip row on 2026-11-06:
+  the chips wrapped and took height away from the textarea. Each row has its own two-step
+  delete; the drawer is mounted in `+layout.svelte` next to `HistoryDrawer`.
+- Both drawers share the shell in `generic/Drawer.svelte` (backdrop, header, Escape, `inert`
+  while closed). A new tool drawer goes through it, not through a copy.
+- The `AA` / `aa` buttons change the case of the **selected text only**, and stay disabled
+  until something is selected — touching the whole note was judged too easy to do by mistake. They write through `document.execCommand('insertText')` on purpose: setting
+  `notesStore.text` directly would wipe the browser's undo stack, and Ctrl+Z must still work.
+  The store write is only the fallback when `execCommand` refuses.
 - The `textarea` is wrapped in `{#key}` on the active id, so switching notes resets scroll
   and undo history instead of carrying them across.
 

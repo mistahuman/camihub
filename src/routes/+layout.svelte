@@ -4,6 +4,7 @@
 	import Header from '$lib/components/generic/Header.svelte';
 	import Footer from '$lib/components/generic/Footer.svelte';
 	import HistoryDrawer from '$lib/components/generic/HistoryDrawer.svelte';
+	import NotesDrawer from '$lib/components/tools/NotesDrawer.svelte';
 	import { uiStore } from '$lib/stores/ui.svelte';
 
 	let { children } = $props();
@@ -24,6 +25,7 @@
 </div>
 
 <HistoryDrawer />
+<NotesDrawer />
 
 <!-- Toast overlay -->
 <div class="pointer-events-none fixed right-6 bottom-6 z-50 flex flex-col gap-2">
